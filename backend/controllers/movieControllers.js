@@ -7,7 +7,7 @@ import Movie from '../models/Movie.js';
 // @access    Public
 const getAllMovies = asyncHandler (async (req, res) => {
 
-    const movies = await Movie.find({});
+    const movies = await Movie.find({}).sort({createdAt:-1});
 
     res.json(movies);
 })
@@ -18,12 +18,14 @@ const getAllMovies = asyncHandler (async (req, res) => {
 // @access    Public
 const addNewMovie = asyncHandler (async (req, res) => {
 
+    const { movieName, yearRelease, image, video, language } = req.body;
+
     const movie = new Movie({
-        movieName: 'Sample Movie',
-        yearRelease: 'XXXX',
-        image: '/images/movie-thumbnail.jpg',
-        video: '',
-        language: 'Hindi/English'
+        movieName: movieName,
+        yearRelease: yearRelease,
+        image: image,
+        video: video,
+        language: language
     });
 
     const newMovie = await movie.save();

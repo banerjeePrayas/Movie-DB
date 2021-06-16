@@ -55,6 +55,11 @@ const MovieCard = ({movies}) => {
                       EDIT
                     </Button>
                     </RouterLink>
+                   { movie.video ?  <RouterLink style={{color: 'red', textDecoration: 'none', width: '100%'}} to={`/videoPlay/${movie._id}`}>
+                    <Button size="medium" color="primary" fullWidth>
+                      WATCH
+                    </Button>
+                    </RouterLink> : null}
                   </CardActions>
                 </Card>
               </Grid>

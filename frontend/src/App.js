@@ -3,6 +3,8 @@ import './index.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './screens/Home'
 import AddMovie from './screens/AddMovie'
+import Edit from './screens/Edit'
+import VideoPlay from './screens/VideoPlay'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import { css } from "@emotion/react";
@@ -37,8 +39,9 @@ function App() {
         <main>
         <Switch>
           <Route path="/" component={Home} exact />
-          <Route path="/edit/:id" component={AddMovie} exact />
-          {/* <Route path="/edit/:id" component={Trial} exact /> */}
+          <Route path="/add" component={AddMovie} exact />
+          <Route path="/edit/:id" component={Edit} exact />
+          <Route path="/videoPlay/:id" component={VideoPlay} exact />
         </Switch>
         </main>
         <Footer />

@@ -10,9 +10,9 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { updateMovie } from '../actions/movieActions'
+import { updateMovie, addMovie } from '../actions/movieActions'
 import { Form } from 'react-bootstrap'
-import { MOVIE_UPDATE_RESET } from '../constants/movieConstants'
+import { MOVIE_CREATE_RESET } from '../constants/movieConstants'
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Progress from '../components/Progress';
@@ -52,13 +52,14 @@ const AddMovie = ({ history, match }) => {
     const [movieName, setMovieName] = useState('')
     const [yearRelease, setYearRelease] = useState('')
     const [image, setImage] = useState('')
+    const [video, setVideo] = useState('')
     const [language, setLanguage] = useState('')
     const [uploading, setUploading] = useState(false)
     const [message, setMessage] = useState('')
     const [uploadPercentage, setUploadPercentage] = useState(0)
 
-    const movieUpdate = useSelector((state) => state.movieUpdate)
-    const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = movieUpdate
+    const movieCreate = useSelector((state) => state.movieCreate)
+    const { loading: loadingUpdate, error: errorUpdate, success } = movieCreate
     let loading = false;
 
 
@@ -76,28 +77,28 @@ const AddMovie = ({ history, match }) => {
 
 
     useEffect(() => {
-      if(successUpdate) {
+      if(success) {
         setMessage('File Uploaded');
-        dispatch({ type:MOVIE_UPDATE_RESET })
+        dispatch({ type:MOVIE_CREATE_RESET })
         history.push('/')
     } else {
-        loading = true;
-        fetch(`/api/movies/${movieId}`)   
-        .then((res) => res.json())
-        .then((movie) => {
-            setMovieName(movie.movieName)
-            setLanguage(movie.language)
-            setImage(movie.image)
-            setYearRelease(movie.yearRelease)
-            loading= false;
-        })
+        // loading = true;
+        // fetch(`/api/movies/${movieId}`)   
+        // .then((res) => res.json())
+        // .then((movie) => {
+        //     setMovieName(movie.movieName)
+        //     setLanguage(movie.language)
+        //     setImage(movie.image)
+        //     setYearRelease(movie.yearRelease)
+        //     loading= false;
+        // })
         
-        .catch((err) => {
-            console.log(err);
-            setMessage('There was a problem with Server. Kindly try again Later')
-        });
+        // .catch((err) => {
+        //     console.log(err);
+        //     setMessage('There was a problem with Server. Kindly try again Later')
+        // });
     }
-    }, [dispatch, history, successUpdate])
+    }, [dispatch, history, success])
 
 
     const uploadFileHandler = async (e) => {
@@ -130,10 +131,45 @@ const AddMovie = ({ history, match }) => {
       }
     }
 
+    const uploadVideoHandler = async (e) => {
+      const file = e.target.files[0]
+      // console.log(file);
+      const formData = new FormData()
+      formData.append('video', file)
+      setUploading(true)
+  
+      try {
+        const config = {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          onUploadProgress: progressEvent => {
+            setUploadPercentage(parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total)))
+            // Clear Percentage
+            setTimeout(() => setUploadPercentage(0), 10000);
+          }
+        }
+  
+        const { data } = await axios.post('/api/video-upload', formData, config)
+        console.log(data);  
+  
+        setVideo(data)
+        setUploading(false)
+      } catch (error) {
+        console.error(error)
+        setUploading(false)
+      }
+    }
 
-    const submitHandler = (e) => {
-        e.preventDefault()
-        dispatch(updateMovie({ _id: movieId, movieName, yearRelease, image, language }));
+
+    // const submitHandler = (e) => {
+    //     e.preventDefault()
+    //     dispatch(updateMovie({ _id: movieId, movieName, yearRelease, image, language }));
+    // }
+
+    const createProductHandler = (e) => {
+          e.preventDefault()
+      dispatch(addMovie({ movieName, yearRelease, image, video, language }));
     }
 
 
@@ -152,13 +188,13 @@ const AddMovie = ({ history, match }) => {
         <Typography component="h1" variant="h5">
           ADD MOVIE
         </Typography>
-        <Form onSubmit={submitHandler}>
+        <Form onSubmit={createProductHandler}>
                 <Form.Group controlId='name'>
                 <Form.Label>Movie Name</Form.Label>
                 <Form.Control
                     type='name'
                     placeholder='Enter name'
-                    value={movieName}
+                    // value='Enter Name'
                     onChange={(e) => setMovieName(e.target.value)}
                 ></Form.Control>
                 </Form.Group>
@@ -168,7 +204,7 @@ const AddMovie = ({ history, match }) => {
                 <Form.Control
                     type='text'
                     placeholder='Enter Year of Release'
-                    value={yearRelease}
+                    // value='Enter Year'
                     onChange={(e) => setYearRelease(e.target.value)}
                 ></Form.Control>
                 </Form.Group>
@@ -192,19 +228,38 @@ const AddMovie = ({ history, match }) => {
                   {uploading && <Loader />}
                 </Form.Group>
 
+                <Form.Group controlId='video'>
+                  <Form.Label>Trailer Video</Form.Label>
+                  <Form.Control
+                    type='text'
+                    placeholder='Enter Video url'
+                    value={video}
+                    onChange={(e) => setVideo(e.target.value)}
+                  ></Form.Control>
+                  <Form.File
+                    id='video-file'
+                    type='file'
+                    name='video'
+                    label='Choose File'
+                    custom
+                    onChange={uploadVideoHandler}
+                  ></Form.File>
+                  {uploading && <Loader />}
+                </Form.Group>
+
                 <Form.Group controlId='brand'>
                 <Form.Label>Language</Form.Label>
                 <Form.Control
                     type='text'
                     placeholder='Enter Language'
-                    value={language}
+                    // value='Language'
                     onChange={(e) => setLanguage(e.target.value)}
                 ></Form.Control>
                 </Form.Group>
                 <Progress percentage={uploadPercentage} />
                 
                     <Button style={{margin: '0 2rem 0 0'}} type='submit' variant='primary'>
-                    Update
+                    SAVE
                     </Button>
                     <a href='#'>
                       <RouterLink to='/'>Go Back</RouterLink>

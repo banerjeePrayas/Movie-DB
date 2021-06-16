@@ -26,15 +26,20 @@ export const listMovies = () => async (dispatch) => {
 }
 
 
-export const addMovie = () => async (dispatch, getState) => {
+export const addMovie = (movie) => async (dispatch, getState) => {
     try {
       dispatch({
         type: MOVIE_CREATE_REQUEST,
       })
-  
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
   
       const { data } = await axios.post(
-        `/api/movies/`, {}
+        `/api/movies/`, movie, config
       )
   
       dispatch({

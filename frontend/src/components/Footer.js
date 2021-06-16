@@ -10,9 +10,9 @@ function Copyright() {
     return (
       <Typography variant="body2" color="textSecondary" align="center">
         {'Copyright © '}
-        <RouterLink color="inherit" href="https://www.linkedin.com/in/prayas-banerjee/">
+        <a color="inherit" target="_blank" href="https://www.linkedin.com/in/prayas-banerjee/">
           Prayas Banerjee
-        </RouterLink>{' '}
+        </a>{' '}
         {new Date().getFullYear()}
         {'.'}
       </Typography>

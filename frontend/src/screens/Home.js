@@ -96,9 +96,9 @@ const Home = ({ history }) => {
         }
     }, [createdMovie, dispatch, history, successCreate])
 
-    const createProductHandler = () => {
-      dispatch(addMovie());
-  }
+  //   const createProductHandler = () => {
+  //     dispatch(addMovie());
+  // }
 
 
   // Get Current movies
@@ -136,10 +136,10 @@ const Home = ({ history }) => {
               <div className={classes.heroButtons}>
                 <Grid container spacing={2} justify="center">
                   <Grid item>
-                    <Button variant="contained" color="primary" onClick={createProductHandler}>
-                      <a style={{color: 'white', textDecoration: 'none'}} href="#">
+                    <Button variant="contained" color="primary">
+                      <RouterLink style={{color: 'white', textDecoration: 'none'}} to="/add">
                     ADD MOVIE
-                  </a>
+                  </RouterLink>
                     </Button>
                   </Grid>
                 </Grid>
