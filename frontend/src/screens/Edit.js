@@ -222,6 +222,9 @@ const Edit = ({ history, match }) => {
                     onChange={uploadFileHandler}
                   ></Form.File>
                   {uploading && <Loader />}
+                  <Typography style={{color: 'red'}} variant="caption" display="block" gutterBottom>
+                    *Only jpg|jpeg|png
+                  </Typography>
                 </Form.Group>
 
                 <Form.Group controlId='video'>
@@ -240,6 +243,9 @@ const Edit = ({ history, match }) => {
                     custom
                     onChange={uploadVideoHandler}
                   ></Form.File>
+                  <Typography variant="caption" style={{color: 'red'}} display="block" gutterBottom>
+                    *Only mp4|gif|mkv
+                  </Typography>
                   {uploading && <Loader />}
                 </Form.Group>
 
