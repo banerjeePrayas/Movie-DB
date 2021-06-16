@@ -89,6 +89,7 @@ const Edit = ({ history, match }) => {
             setMovieName(movie.movieName)
             setLanguage(movie.language)
             setImage(movie.image)
+            setVideo(movie.video)
             setYearRelease(movie.yearRelease)
             loading= false;
         })
@@ -164,7 +165,7 @@ const Edit = ({ history, match }) => {
 
     const submitHandler = (e) => {
         e.preventDefault()
-        dispatch(updateMovie({ _id: movieId, movieName, yearRelease, image, language }));
+        dispatch(updateMovie({ _id: movieId, movieName, yearRelease, image, video, language }));
     }
 
 
