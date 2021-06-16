@@ -102,29 +102,61 @@ const Edit = ({ history, match }) => {
     }, [dispatch, history, successUpdate])
 
 
+    // const uploadFileHandler = async (e) => {
+    //   const file = e.target.files[0]
+    //   // console.log(file);
+    //   const formData = new FormData()
+    //   formData.append('image', file)
+    //   setUploading(true)
+  
+    //   try {
+    //     const config = {
+    //       headers: {
+    //         'Content-Type': 'multipart/form-data',
+    //       },
+    //       onUploadProgress: progressEvent => {
+    //         setUploadPercentage(parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total)))
+    //         // Clear Percentage
+    //         setTimeout(() => setUploadPercentage(0), 10000);
+    //       }
+    //     }
+  
+    //     const { data } = await axios.post('/api/upload', formData, config)
+    //     console.log(data);  
+  
+    //     setImage(data)
+    //     setUploading(false)
+    //   } catch (error) {
+    //     console.error(error)
+    //     setUploading(false)
+    //   }
+    // }
+
+
     const uploadFileHandler = async (e) => {
       const file = e.target.files[0]
       // console.log(file);
       const formData = new FormData()
-      formData.append('image', file)
+      formData.append('file', file)
+      formData.append("upload_preset", "movieDb")
       setUploading(true)
   
       try {
-        const config = {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          onUploadProgress: progressEvent => {
-            setUploadPercentage(parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total)))
-            // Clear Percentage
-            setTimeout(() => setUploadPercentage(0), 10000);
-          }
-        }
+        // const config = {
+        //   headers: {
+        //     'Content-Type': 'multipart/form-data',
+        //   },
+        //   onUploadProgress: progressEvent => {
+        //     setUploadPercentage(parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total)))
+        //     // Clear Percentage
+        //     setTimeout(() => setUploadPercentage(0), 10000);
+        //   }
+        // }
   
-        const { data } = await axios.post('/api/upload', formData, config)
+        const { data } = await axios.post('https://api.cloudinary.com/v1_1/the-covid-ease/image/upload', formData)
         console.log(data);  
   
-        setImage(data)
+        setImage(data.public_id)
         setUploading(false)
       } catch (error) {
         console.error(error)
@@ -132,35 +164,65 @@ const Edit = ({ history, match }) => {
       }
     }
 
+
+
+    // const uploadVideoHandler = async (e) => {
+    //     const file = e.target.files[0]
+    //     // console.log(file);
+    //     const formData = new FormData()
+    //     formData.append('video', file)
+    //     setUploading(true)
+    
+    //     try {
+    //       const config = {
+    //         headers: {
+    //           'Content-Type': 'multipart/form-data',
+    //         },
+    //         onUploadProgress: progressEvent => {
+    //           setUploadPercentage(parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total)))
+    //           // Clear Percentage
+    //           setTimeout(() => setUploadPercentage(0), 10000);
+    //         }
+    //       }
+    
+    //       const { data } = await axios.post('/api/video-upload', formData, config)
+    //       console.log(data);  
+    
+    //       setVideo(data)
+    //       setUploading(false)
+    //     } catch (error) {
+    //       console.error(error)
+    //       setUploading(false)
+    //     }
+    //   }
+
     const uploadVideoHandler = async (e) => {
-        const file = e.target.files[0]
-        // console.log(file);
-        const formData = new FormData()
-        formData.append('video', file)
-        setUploading(true)
-    
-        try {
-          const config = {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-            onUploadProgress: progressEvent => {
-              setUploadPercentage(parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total)))
-              // Clear Percentage
-              setTimeout(() => setUploadPercentage(0), 10000);
-            }
-          }
-    
-          const { data } = await axios.post('/api/video-upload', formData, config)
-          console.log(data);  
-    
-          setVideo(data)
-          setUploading(false)
-        } catch (error) {
-          console.error(error)
-          setUploading(false)
-        }
+      const file = e.target.files[0]
+      // console.log(file);
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append("upload_preset", "movieDb")
+      // setUploading(true)
+      loading = true;
+
+      try {
+        setTimeout(() => {
+          setUploading(true)
+      }, 8000)
+      const { data } = await axios.post('https://api.cloudinary.com/v1_1/the-covid-ease/video/upload', formData)
+        console.log(data);  
+  
+        setVideo(data.public_id)
+        setTimeout(() => {
+        setUploading(false);
+        loading = false;
+      }, 5000)
+      } catch (error) {
+        console.error(error)
+        setUploading(false)
+        loading = false;
       }
+    }
   
 
     const submitHandler = (e) => {
@@ -221,11 +283,11 @@ const Edit = ({ history, match }) => {
                     custom
                     onChange={uploadFileHandler}
                   ></Form.File>
-                  {uploading && <Loader />}
                   <Typography style={{color: 'red'}} variant="caption" display="block" gutterBottom>
                     *Only jpg|jpeg|png
                   </Typography>
                 </Form.Group>
+                  {uploading && <Loader />}
 
                 <Form.Group controlId='video'>
                   <Form.Label>Trailer Video</Form.Label>
@@ -246,8 +308,8 @@ const Edit = ({ history, match }) => {
                   <Typography variant="caption" style={{color: 'red'}} display="block" gutterBottom>
                     *Only mp4|gif|mkv
                   </Typography>
-                  {uploading && <Loader />}
                 </Form.Group>
+                  {uploading && <Loader />}
 
                 <Form.Group controlId='brand'>
                 <Form.Label>Language</Form.Label>

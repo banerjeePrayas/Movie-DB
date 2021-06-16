@@ -105,29 +105,33 @@ const AddMovie = ({ history, match }) => {
       const file = e.target.files[0]
       // console.log(file);
       const formData = new FormData()
-      formData.append('image', file)
+      formData.append('file', file)
+      formData.append("upload_preset", "movieDb")
       setUploading(true)
+      loading = true;
   
       try {
-        const config = {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          onUploadProgress: progressEvent => {
-            setUploadPercentage(parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total)))
-            // Clear Percentage
-            setTimeout(() => setUploadPercentage(0), 10000);
-          }
-        }
+        // const config = {
+        //   headers: {
+        //     'Content-Type': 'multipart/form-data',
+        //   },
+        //   onUploadProgress: progressEvent => {
+        //     setUploadPercentage(parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total)))
+        //     // Clear Percentage
+        //     setTimeout(() => setUploadPercentage(0), 10000);
+        //   }
+        // }
   
-        const { data } = await axios.post('/api/upload', formData, config)
+        const { data } = await axios.post('https://api.cloudinary.com/v1_1/the-covid-ease/image/upload', formData)
         console.log(data);  
   
-        setImage(data)
+        setImage(data.public_id)
         setUploading(false)
+        loading = false;
       } catch (error) {
         console.error(error)
         setUploading(false)
+        loading = false;
       }
     }
 
@@ -135,26 +139,16 @@ const AddMovie = ({ history, match }) => {
       const file = e.target.files[0]
       // console.log(file);
       const formData = new FormData()
-      formData.append('video', file)
+      formData.append('file', file)
+      formData.append("upload_preset", "movieDb")
       setUploading(true)
-  
+
       try {
-        const config = {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          onUploadProgress: progressEvent => {
-            setUploadPercentage(parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total)))
-            // Clear Percentage
-            setTimeout(() => setUploadPercentage(0), 10000);
-          }
-        }
-  
-        const { data } = await axios.post('/api/video-upload', formData, config)
+      const { data } = await axios.post('https://api.cloudinary.com/v1_1/the-covid-ease/video/upload', formData)
         console.log(data);  
   
-        setVideo(data)
-        setUploading(false)
+        setVideo(data.public_id)
+        setUploading(false);
       } catch (error) {
         console.error(error)
         setUploading(false)
@@ -226,6 +220,9 @@ const AddMovie = ({ history, match }) => {
                     onChange={uploadFileHandler}
                   ></Form.File>
                   {uploading && <Loader />}
+                  <Typography variant="caption" style={{color: 'red'}} display="block" gutterBottom>
+                    *Only jpg|jpeg|png
+                  </Typography>
                 </Form.Group>
 
                 <Form.Group controlId='video'>
@@ -245,6 +242,9 @@ const AddMovie = ({ history, match }) => {
                     onChange={uploadVideoHandler}
                   ></Form.File>
                   {uploading && <Loader />}
+                  <Typography variant="caption" style={{color: 'red'}} display="block" gutterBottom>
+                    *Only mp4|gif|mkv
+                  </Typography>
                 </Form.Group>
 
                 <Form.Group controlId='brand'>

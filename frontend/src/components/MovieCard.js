@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import { Image } from 'cloudinary-react'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +37,7 @@ const MovieCard = ({movies}) => {
           {movies.map( movie => (
                 <Grid item key={movie._id} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
-                <img src={movie.image} alt="Profile Pic" style={{width: '100%', height: "200px"}}></img>
+                <Image cloudName="the-covid-ease" publicId={`https://res.cloudinary.com/the-covid-ease/image/upload/v1623868146/${movie.image}`} alt="Profile Pic" style={{width: '100%', height: "200px"}}></Image>
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
                       {movie.movieName}
