@@ -1,5 +1,5 @@
 # Movie-DB
->  Simple Movie Database of My Personal Collections.
+>  Simple Movie Database of My Personal Collections & Most of the Movies are attached with their Trailer Video all in One Place.
 
 
 
