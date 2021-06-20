@@ -38,9 +38,8 @@ const Footer = () => {
             Movie DB
           </Typography>
           <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          <a color="inherit" target="_blank" href="https://github.com/banerjeePrayas">
-            <i class="fab fa-github fa-2x"></i>
-          </a>
+
+
           </Typography>
           <Copyright />
         </footer>
