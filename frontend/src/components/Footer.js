@@ -38,7 +38,8 @@ const Footer = () => {
             Movie DB
           </Typography>
           <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-            
+
+
           </Typography>
           <Copyright />
         </footer>
