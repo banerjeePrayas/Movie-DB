@@ -24,7 +24,7 @@ const VideoPlay = ({ match }) => {
             // .finally(() => {
             //   setLoading(false);
             // });
-      }, [movieId])
+      }, [movieId, video])
     return (
         <div>
             {/* <ReactPlayer width='100%' height='500px' controls cloudName="the-covid-ease" publicId={`https://res.cloudinary.com/the-covid-ease/video/upload/v1623869709/${video}`} /> */}
